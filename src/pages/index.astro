@@ -1,0 +1,272 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="El Mundo del Celular">
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">El futuro está en tus manos</h1>
+        <p class="hero-subtitle">Descubre los smartphones más innovadores del mercado</p>
+        <div class="hero-cta">
+          <a href="/productos" class="btn-primary">Ver productos</a>
+          <a href="#features" class="btn-secondary">Conocer más</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="phone-mockup">📱</div>
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <div class="container">
+        <h2 class="section-title">Diseñados para destacar</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Rendimiento Ultra</h3>
+            <p>Procesadores de última generación para la máxima velocidad</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📸</div>
+            <h3>Cámara Pro</h3>
+            <p>Sistema de cámaras profesional que captura cada momento</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔋</div>
+            <h3>Batería Inteligente</h3>
+            <p>Tecnología que dura todo el día y carga en minutos</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase">
+      <div class="container">
+        <div class="showcase-content">
+          <h2 class="showcase-title">Elegancia y potencia</h2>
+          <p class="showcase-text">
+            Cada detalle ha sido cuidadosamente diseñado para ofrecerte
+            la mejor experiencia móvil. Desde la pantalla hasta el acabado,
+            todo es excepcional.
+          </p>
+          <a href="/productos" class="link-arrow">Explorar colección →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    padding-top: 60px;
+  }
+
+  .hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .hero-content {
+    max-width: 600px;
+    z-index: 1;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    animation: fadeIn 1s ease-out 0.2s both;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    margin-bottom: 2rem;
+    opacity: 0.95;
+    animation: fadeIn 1s ease-out 0.4s both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeIn 1s ease-out 0.6s both;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 1rem 2rem;
+    border-radius: 980px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: white;
+    color: #667eea;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(10px);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .hero-image {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      justify-content: space-between;
+      padding: 2rem 4rem;
+    }
+
+    .hero-image {
+      display: block;
+      animation: scaleIn 1s ease-out 0.8s both;
+    }
+
+    .phone-mockup {
+      font-size: 15rem;
+      animation: float 3s ease-in-out infinite;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .features {
+    padding: 6rem 2rem;
+    background: var(--color-bg);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4rem;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .feature-card {
+    background: var(--color-surface);
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeIn 1s ease-out;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .feature-card p {
+    color: #86868b;
+    line-height: 1.6;
+  }
+
+  .showcase {
+    padding: 6rem 2rem;
+    background: var(--color-surface);
+  }
+
+  .showcase-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .showcase-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  .showcase-text {
+    font-size: 1.2rem;
+    color: #86868b;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+
+  .link-arrow {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: transform 0.3s;
+    display: inline-block;
+  }
+
+  .link-arrow:hover {
+    transform: translateX(8px);
+  }
+</style>
