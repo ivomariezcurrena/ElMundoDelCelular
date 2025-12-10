@@ -1,0 +1,25 @@
+{
+  "name": "elmundodelcelular",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Landing page estilo Apple con Astro + Supabase",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "keywords": ["astro", "supabase", "landing-page"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@astrojs/node": "^9.5.1",
+    "@supabase/supabase-js": "^2.87.1",
+    "astro": "^5.16.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.7.2"
+  }
+}
