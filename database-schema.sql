@@ -20,6 +20,9 @@ CREATE POLICY "Allow public read access" ON telefonos
   USING (true);
 
 -- Política para permitir inserción pública (para el formulario admin)
+-- ⚠️ ADVERTENCIA: En producción, esta política debería restringirse
+-- a usuarios autenticados. Esta configuración es para desarrollo/demo.
+-- Para producción, considere implementar autenticación con Supabase Auth.
 CREATE POLICY "Allow public insert access" ON telefonos
   FOR INSERT
   WITH CHECK (true);

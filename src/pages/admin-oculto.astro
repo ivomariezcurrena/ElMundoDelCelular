@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// Obtener variables de entorno para pasarlas al cliente
+const supabaseUrl = import.meta.env.SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.SUPABASE_ANON_KEY || '';
 ---
 
 <Layout title="Admin - El Mundo del Celular">
@@ -72,6 +76,12 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
   </main>
+  
+  <!-- Pasar variables de entorno al cliente -->
+  <script is:inline define:vars={{ supabaseUrl, supabaseAnonKey }}>
+    window.SUPABASE_URL = supabaseUrl;
+    window.SUPABASE_ANON_KEY = supabaseAnonKey;
+  </script>
 </Layout>
 
 <style>
@@ -241,7 +251,10 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
-  import { supabase } from '../lib/supabase';
+  import { createClient } from '@supabase/supabase-js';
+  
+  // @ts-ignore - Variables passed from server
+  const supabase = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
 
   const form = document.getElementById('productForm') as HTMLFormElement;
   const imageInput = document.getElementById('imagen') as HTMLInputElement;
@@ -250,6 +263,9 @@ import Layout from '../layouts/Layout.astro';
   const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
   const btnText = submitBtn.querySelector('.btn-text') as HTMLSpanElement;
   const btnLoader = submitBtn.querySelector('.btn-loader') as HTMLSpanElement;
+
+  // Extensiones permitidas
+  const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
 
   // Preview de imagen
   imageInput.addEventListener('change', (e) => {
@@ -277,7 +293,13 @@ import Layout from '../layouts/Layout.astro';
 
   // Función para subir imagen a Supabase Storage
   async function uploadImage(file: File): Promise<string> {
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split('.').pop()?.toLowerCase();
+    
+    // Validar extensión
+    if (!fileExt || !ALLOWED_EXTENSIONS.includes(fileExt)) {
+      throw new Error(`Formato de imagen no permitido. Use: ${ALLOWED_EXTENSIONS.join(', ')}`);
+    }
+    
     const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
 

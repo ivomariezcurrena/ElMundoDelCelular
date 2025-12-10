@@ -3,6 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 import type { Telefono } from '../lib/supabase';
 
+// Configuración de localización
+const LOCALE = 'es-AR';
+
 // Obtener productos desde Supabase
 let productos: Telefono[] = [];
 let error: string | null = null;
@@ -65,7 +68,7 @@ try {
                   <p class="producto-descripcion">{producto.descripcion}</p>
                   <div class="producto-footer">
                     <span class="producto-precio">
-                      ${producto.precio.toLocaleString('es-AR')}
+                      ${producto.precio.toLocaleString(LOCALE)}
                     </span>
                     <button class="btn-comprar">Comprar</button>
                   </div>
