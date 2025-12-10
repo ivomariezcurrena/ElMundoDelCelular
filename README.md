@@ -48,13 +48,22 @@ npm install
 
 #### 3.2. Ejecutar el schema de base de datos
 
+**Si es la primera vez (base de datos nueva):**
+
 1. En tu proyecto de Supabase, ve a **SQL Editor**
 2. Copia el contenido del archivo `database-schema.sql`
 3. Pégalo en el editor y haz clic en **RUN**
 
-Esto creará:
-- La tabla `telefonos` con las columnas necesarias
-- Las políticas de seguridad (RLS)
+**Si ya tenías una base de datos creada anteriormente:**
+
+1. En tu proyecto de Supabase, ve a **SQL Editor**
+2. Copia el contenido del archivo `migration-add-categoria.sql`
+3. Pégalo en el editor y haz clic en **RUN**
+
+Esto creará/actualizará:
+
+- La tabla `telefonos` con todas las columnas necesarias (incluida `categoria`)
+- Las políticas de seguridad (RLS) para lectura, inserción y eliminación
 - El bucket de storage `productos` para imágenes
 
 #### 3.3. Configurar variables de entorno
@@ -104,17 +113,20 @@ La aplicación estará disponible en `http://localhost:4321`
 ## 🎯 Páginas
 
 ### `/` - Landing Page
+
 - Hero section con animaciones suaves
 - Sección de características
 - Diseño degradado y efectos modernos
 
 ### `/productos` - Catálogo
+
 - Muestra todos los productos desde Supabase
 - Grid responsive
 - Animaciones al hover
 - Manejo de estados vacíos y errores
 
 ### `/admin-oculto` - Panel de Administración
+
 - Formulario para agregar productos
 - Subida de imágenes a Supabase Storage
 - Preview de imágenes
@@ -124,14 +136,15 @@ La aplicación estará disponible en `http://localhost:4321`
 
 ### Tabla: `telefonos`
 
-| Campo        | Tipo      | Descripción                    |
-|--------------|-----------|--------------------------------|
-| id           | BIGSERIAL | ID único (auto-incremental)    |
-| nombre       | VARCHAR   | Nombre del producto            |
-| descripcion  | TEXT      | Descripción del producto       |
-| precio       | DECIMAL   | Precio del producto            |
-| imagen_url   | TEXT      | URL de la imagen en Storage    |
-| created_at   | TIMESTAMP | Fecha de creación              |
+| Campo       | Tipo               | Descripción                                  |
+| ----------- | ------------------ | -------------------------------------------- |
+| id          | BIGSERIAL          | ID único (auto-incremental)                  |
+| nombre      | VARCHAR(255)       | Nombre del producto                          |
+| descripcion | TEXT               | Descripción del producto                     |
+| precio      | DECIMAL(10,2)      | Precio del producto                          |
+| categoria   | categoria_producto | Categoría (iphone/airpods/fundas/accesorios) |
+| imagen_url  | TEXT               | URL de la imagen en Storage                  |
+| created_at  | TIMESTAMP          | Fecha de creación                            |
 
 ## 📤 Deployment
 
@@ -148,16 +161,19 @@ La aplicación estará disponible en `http://localhost:4321`
 ### Deploy en Netlify
 
 1. Instala el CLI de Netlify:
+
 ```bash
 npm install -g netlify-cli
 ```
 
 2. Construye el proyecto:
+
 ```bash
 npm run build
 ```
 
 3. Deploy:
+
 ```bash
 netlify deploy --prod
 ```
@@ -167,6 +183,7 @@ netlify deploy --prod
 ### Deploy en un VPS
 
 1. Construye el proyecto:
+
 ```bash
 npm run build
 ```
@@ -220,7 +237,7 @@ Puedes agregar autenticación simple con Supabase Auth:
 // En admin-oculto.astro
 const session = await supabase.auth.getSession();
 if (!session) {
-  return Astro.redirect('/login');
+  return Astro.redirect("/login");
 }
 ```
 
@@ -229,13 +246,23 @@ if (!session) {
 ### Agregar un producto
 
 1. Ve a `/admin-oculto`
-2. Completa el formulario:
+2. En la pestaña **"Agregar Producto"**, completa el formulario:
    - Nombre del producto
+   - Categoría (iPhone, AirPods, Fundas o Accesorios)
    - Descripción
    - Precio (solo números)
-   - Imagen (JPG, PNG, etc.)
-3. Haz clic en "Agregar Producto"
-4. El producto aparecerá en `/productos`
+   - Imagen (JPG, PNG, WEBP, etc.)
+3. Haz clic en "Agregar producto"
+4. El producto aparecerá automáticamente en `/productos`
+
+### Gestionar productos
+
+1. Ve a `/admin-oculto`
+2. Haz clic en la pestaña **"Gestionar Productos"**
+3. Verás todos tus productos organizados en tarjetas
+4. Cada producto muestra su categoría, nombre, precio e imagen
+5. Haz clic en "Eliminar" para borrar un producto
+6. Confirma la eliminación en el modal que aparece
 
 ### Verificar en Supabase
 

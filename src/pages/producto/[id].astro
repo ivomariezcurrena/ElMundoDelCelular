@@ -1,0 +1,319 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { supabase, CATEGORIAS } from '../../lib/supabase';
+import type { Telefono } from '../../lib/supabase';
+import { Image } from 'astro:assets';
+const { id } = Astro.params;
+
+// Configuración de localización
+const LOCALE = 'es-AR';
+
+// Obtener el producto específico
+let producto: Telefono | null = null;
+let error: string | null = null;
+
+try {
+  const { data, error: fetchError } = await supabase
+    .from('telefonos')
+    .select('*')
+    .eq('id', id)
+    .single();
+  
+  if (fetchError) throw fetchError;
+  producto = data;
+} catch (e) {
+  error = e instanceof Error ? e.message : 'Producto no encontrado';
+  console.error('Error fetching producto:', e);
+}
+
+// Si no hay producto, retornar 404
+if (!producto) {
+  return Astro.redirect('/productos');
+}
+
+const categoriaInfo = CATEGORIAS[producto.categoria];
+---
+
+<Layout title={`${producto.nombre} - El Mundo del Celular`}>
+  <main class="producto-detalle-page">
+    <section class="detalle-hero">
+      <div class="container">
+        <a href="/productos" class="btn-back">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M12 16L6 10L12 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Volver a productos
+        </a>
+      </div>
+    </section>
+
+    {producto && (
+      <section class="detalle-content">
+        <div class="container">
+          <div class="detalle-grid">
+            <div class="detalle-image-section">
+              <div class="detalle-image-wrapper">
+                <Image 
+                  src={producto.imagen_url} 
+                  alt={producto.nombre}
+                  class="detalle-image"
+                  width={800}
+                  height={800}
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            
+            <div class="detalle-info-section">
+              <p class="detalle-categoria">{categoriaInfo.nombre}</p>
+              <h1 class="detalle-nombre">{producto.nombre}</h1>
+              <p class="detalle-precio">${producto.precio.toLocaleString(LOCALE)}</p>
+              <div class="detalle-descripcion">
+                <h2>Descripción</h2>
+                <p>{producto.descripcion}</p>
+              </div>
+              <div class="detalle-actions">
+                <a 
+                  href={`https://wa.me/5491165874209?text=Hola!%20Estoy%20interesado%20en%20${encodeURIComponent(producto.nombre)}%20-%20$${producto.precio}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-contactar-whatsapp"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                  </svg>
+                  Contactar por WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+  </main>
+</Layout>
+
+<style>
+  .producto-detalle-page {
+    padding-top: 60px;
+    min-height: 100vh;
+    background: #f5f5f7;
+  }
+
+  .detalle-hero {
+    background: white;
+    border-bottom: 1px solid #d2d2d7;
+    padding: 1rem 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0071e3;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    transition: opacity 0.2s;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-back:hover {
+    opacity: 0.7;
+  }
+
+  .btn-back svg {
+    transition: transform 0.2s;
+  }
+
+  .btn-back:hover svg {
+    transform: translateX(-2px);
+  }
+
+  .detalle-content {
+    padding: 4rem 0 6rem;
+  }
+
+  .detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .detalle-grid {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .detalle-content {
+      padding: 5rem 0 8rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .detalle-grid {
+      gap: 6rem;
+    }
+  }
+
+  .detalle-image-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .detalle-image-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 4rem;
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid #d2d2d7;
+    transition: box-shadow 0.3s;
+  }
+
+  .detalle-image-wrapper:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .detalle-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .detalle-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 1rem 0;
+  }
+
+  .detalle-categoria {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #f56300;
+    margin-bottom: 0.5rem;
+  }
+
+  .detalle-nombre {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 600;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 1rem 0;
+  }
+
+  .detalle-precio {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 2rem;
+  }
+
+  .detalle-descripcion {
+    padding: 2rem 0;
+    border-top: 1px solid #d2d2d7;
+    margin-bottom: 2rem;
+  }
+
+  .detalle-descripcion h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+  }
+
+  .detalle-descripcion p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #6e6e73;
+  }
+
+  .detalle-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn-contactar-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    background: #25D366;
+    color: white;
+    padding: 0.875rem 1.75rem;
+    border-radius: 980px;
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+  }
+
+  .btn-contactar-whatsapp:hover {
+    background: #20ba5a;
+    transform: scale(1.02);
+  }
+
+  .btn-contactar-whatsapp:active {
+    transform: scale(0.98);
+  }
+
+  .btn-contactar-whatsapp svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .detalle-content {
+      padding: 2rem 0 4rem;
+    }
+
+    .detalle-grid {
+      gap: 2.5rem;
+    }
+
+    .detalle-image-wrapper {
+      padding: 2.5rem;
+      border-radius: 16px;
+    }
+
+    .detalle-info-section {
+      padding: 0;
+    }
+
+    .btn-contactar-whatsapp {
+      width: 100%;
+      padding: 1rem 1.75rem;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

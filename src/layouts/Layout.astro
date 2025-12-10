@@ -19,8 +19,13 @@ const { title } = Astro.props;
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="/" class="logo">📱 El Mundo del Celular</a>
-        <div class="nav-links">
+        <a href="/" class="logo">El Mundo del Celular</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+        </button>
+        <div class="nav-links" id="navLinks">
           <a href="/">Inicio</a>
           <a href="/productos">Productos</a>
         </div>
@@ -28,8 +33,25 @@ const { title } = Astro.props;
     </nav>
     <slot />
     <footer class="footer">
-      <p>&copy; 2024 El Mundo del Celular. Todos los derechos reservados.</p>
+      <p>&copy; 2025 Echo con ❤️ por Marz Software para El Mundo del Celular.</p>
     </footer>
+    <script>
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+      
+      menuToggle?.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks?.classList.toggle('active');
+      });
+
+      // Cerrar menú al hacer click en un enlace
+      navLinks?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle?.classList.remove('active');
+          navLinks?.classList.remove('active');
+        });
+      });
+    </script>
   </body>
 </html>
 
@@ -70,7 +92,6 @@ const { title } = Astro.props;
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
     z-index: 1000;
-    animation: slideDown 0.5s ease-out;
   }
 
   @keyframes slideDown {
@@ -120,6 +141,70 @@ const { title } = Astro.props;
 
   .nav-links a:hover {
     opacity: 0.7;
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .hamburger {
+    width: 20px;
+    height: 2px;
+    background: var(--color-text);
+    transition: all 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: flex;
+      z-index: 1001;
+    }
+
+    .nav-links {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(251, 251, 253, 0.98);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 2rem;
+      gap: 1.5rem;
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-links.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .nav-links a {
+      font-size: 1.1rem;
+      padding: 0.5rem 0;
+    }
+
+    .menu-toggle.active .hamburger:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle.active .hamburger:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active .hamburger:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
   }
 
   .footer {

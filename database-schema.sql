@@ -1,6 +1,9 @@
 -- Script SQL para crear la tabla en Supabase
 -- Ejecutar esto en el SQL Editor de Supabase
 
+-- Crear enum para categorías
+CREATE TYPE categoria_producto AS ENUM ('iphone', 'airpods', 'fundas', 'accesorios');
+
 -- Crear tabla telefonos
 CREATE TABLE IF NOT EXISTS telefonos (
   id BIGSERIAL PRIMARY KEY,
@@ -8,6 +11,7 @@ CREATE TABLE IF NOT EXISTS telefonos (
   descripcion TEXT,
   precio DECIMAL(10, 2) NOT NULL,
   imagen_url TEXT NOT NULL,
+  categoria categoria_producto NOT NULL DEFAULT 'iphone',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
 );
 
@@ -26,6 +30,13 @@ CREATE POLICY "Allow public read access" ON telefonos
 CREATE POLICY "Allow public insert access" ON telefonos
   FOR INSERT
   WITH CHECK (true);
+
+-- Política para permitir eliminación pública (para el panel admin)
+-- ⚠️ ADVERTENCIA: En producción, esta política debería restringirse
+-- a usuarios autenticados. Esta configuración es para desarrollo/demo.
+CREATE POLICY "Allow public delete access" ON telefonos
+  FOR DELETE
+  USING (true);
 
 -- Crear índice para mejorar rendimiento
 CREATE INDEX idx_telefonos_created_at ON telefonos(created_at DESC);

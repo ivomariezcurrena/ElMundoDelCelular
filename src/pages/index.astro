@@ -6,15 +6,11 @@ import Layout from '../layouts/Layout.astro';
   <main>
     <section class="hero">
       <div class="hero-content">
-        <h1 class="hero-title">El futuro está en tus manos</h1>
-        <p class="hero-subtitle">Descubre los smartphones más innovadores del mercado</p>
-        <div class="hero-cta">
-          <a href="/productos" class="btn-primary">Ver productos</a>
-          <a href="#features" class="btn-secondary">Conocer más</a>
-        </div>
+        <h1 class="hero-title">El mundo del celular</h1>
+        <p class="hero-subtitle">iPhone, fundas, AirPods y más en un solo lugar</p>
       </div>
       <div class="hero-image">
-        <div class="phone-mockup">📱</div>
+        <img src="./apl.svg" alt="iPhones">
       </div>
     </section>
 
@@ -63,118 +59,78 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .hero {
-    min-height: 90vh;
-    display: flex;
+    min-height: 85vh;
+    display: grid;
+    grid-template-columns: 1fr;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    gap: 3rem;
+    padding: 4rem 2rem;
+    background: #f5f5f7;
     position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    animation: rotate 20s linear infinite;
-  }
-
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
   }
 
   .hero-content {
-    max-width: 600px;
-    z-index: 1;
-    animation: fadeIn 1s ease-out;
+    text-align: center;
+    z-index: 2;
   }
 
   .hero-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.5rem, 7vw, 5rem);
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     line-height: 1.1;
-    animation: fadeIn 1s ease-out 0.2s both;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
   }
 
   .hero-subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
-    margin-bottom: 2rem;
-    opacity: 0.95;
-    animation: fadeIn 1s ease-out 0.4s both;
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    animation: fadeIn 1s ease-out 0.6s both;
-  }
-
-  .btn-primary, .btn-secondary {
-    padding: 1rem 2rem;
-    border-radius: 980px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: inline-block;
-  }
-
-  .btn-primary {
-    background: white;
-    color: #667eea;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  }
-
-  .btn-secondary {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    backdrop-filter: blur(10px);
-  }
-
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
+    font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+    color: #6e6e73;
+    line-height: 1.5;
+    max-width: 600px;
+    margin: 0 auto;
   }
 
   .hero-image {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-image img {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    object-fit: contain;
   }
 
   @media (min-width: 768px) {
     .hero {
-      justify-content: space-between;
-      padding: 2rem 4rem;
+      grid-template-columns: 1fr 1.2fr;
+      padding: 4rem 4rem;
+      gap: 3rem;
     }
 
-    .hero-image {
-      display: block;
-      animation: scaleIn 1s ease-out 0.8s both;
+    .hero-content {
+      text-align: left;
     }
 
-    .phone-mockup {
-      font-size: 15rem;
-      animation: float 3s ease-in-out infinite;
+    .hero-subtitle {
+      margin: 0;
+    }
+
+    .hero-image img {
+      max-width: 750px;
     }
   }
 
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
+  @media (min-width: 1200px) {
+    .hero {
+      padding: 4rem 6rem;
     }
-    50% {
-      transform: translateY(-20px);
+
+    .hero-image img {
+      max-width: 900px;
     }
   }
 
@@ -193,7 +149,6 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 700;
     text-align: center;
     margin-bottom: 4rem;
-    animation: fadeIn 1s ease-out;
   }
 
   .features-grid {
@@ -208,7 +163,6 @@ import Layout from '../layouts/Layout.astro';
     border-radius: 20px;
     box-shadow: var(--shadow-sm);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeIn 1s ease-out;
   }
 
   .feature-card:hover {
@@ -241,7 +195,6 @@ import Layout from '../layouts/Layout.astro';
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
-    animation: fadeIn 1s ease-out;
   }
 
   .showcase-title {
