@@ -13,7 +13,7 @@ export const prerender = false;
 
 // Obtener el producto específico
 let producto: Telefono | null = null;
-
+let error: string | null = null;
 
 try {
   const { data, error: fetchError } = await supabase
@@ -25,6 +25,7 @@ try {
   if (fetchError) throw fetchError;
   producto = data;
 } catch (e) {
+  error = e instanceof Error ? e.message : 'Producto no encontrado';
   console.error('Error fetching producto:', e);
 }
 
